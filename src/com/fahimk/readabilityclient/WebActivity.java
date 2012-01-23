@@ -629,7 +629,6 @@ public class WebActivity extends Activity {
 			List<Bookmark> bookmarks = response.bookmarks;
 			String latestUpdate = zeroUpdate;
 			//Log.e("looking at bookmark", "hello");
-			int count = 0;
 			publishProgress(0, bookmarks.size());
 			for(Bookmark bm : bookmarks) {
 				//Log.e("looking at bookmark", bm.article.title);
@@ -676,7 +675,6 @@ public class WebActivity extends Activity {
 					Log.e("inserted", bm.article.title );
 				}
 
-				count++;
 			}
 			SharedPreferences.Editor editor = preferences.edit();
 			editor.putString("previous_update", latestUpdate);
