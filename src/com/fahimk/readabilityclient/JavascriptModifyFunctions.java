@@ -8,35 +8,35 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 public class JavascriptModifyFunctions {
-	static boolean showImages = true;
-	static boolean showLinks = true;
-	
-	final static int TYPE_COL = 0;
-	final static int TYPE_SIZE = 1;
-	final static int TYPE_STYLE = 2;
+    static boolean showImages = true;
+    static boolean showLinks = true;
 
-	static int[] currentTypesSelected = {2, 2, 0};
-	static String[] mobileStyles = {"Newspaper", "Novel", "eBook", "Inverse", "Athelas"};
-	static String[] mobileSizes = {"x-small", "small", "medium", "large", "x-large"};
-	static String[] mobileCols = {"x-narrow", "narrow", "medium", "wide", "x-wide"};
-    
-	static String[] editNames = {"col", "size", "style"};
+    static final int TYPE_COL = 0;
+    static final int TYPE_SIZE = 1;
+    static final int TYPE_STYLE = 2;
 
-	static ImageButton toggleImages;
-	static ImageButton toggleLinks;
+    static int[] currentTypesSelected = {2, 2, 0};
+    static String[] mobileStyles = {"Newspaper", "Novel", "eBook", "Inverse", "Athelas"};
+    static String[] mobileSizes = {"x-small", "small", "medium", "large", "x-large"};
+    static String[] mobileCols = {"x-narrow", "narrow", "medium", "wide", "x-wide"};
 
-	static ImageButton smallerWidth;
-	static ImageButton largerWidth;
+    static String[] editNames = {"col", "size", "style"};
 
-	static Button previousTheme;
-	static Button nextTheme;
-	static TextView currentThemeText;
+    static ImageButton toggleImages;
+    static ImageButton toggleLinks;
 
-	static ImageButton smallerText;
-	static ImageButton largerText;
+    static ImageButton smallerWidth;
+    static ImageButton largerWidth;
 
-	static Button hidePanel;
-	static View frameLayout;
+    static Button previousTheme;
+    static Button nextTheme;
+    static TextView currentThemeText;
+
+    static ImageButton smallerText;
+    static ImageButton largerText;
+
+    static Button hidePanel;
+    static View frameLayout;
 
 	public static void addButtonListeners(View frameLayout2, final WebView webView) {
 		frameLayout = frameLayout2;
@@ -51,8 +51,8 @@ public class JavascriptModifyFunctions {
 		largerText = (ImageButton) frameLayout.findViewById(R.id.button_edit_nextsize);
 
 		smallerWidth = (ImageButton) frameLayout.findViewById(R.id.button_edit_prevwidth);
-		largerWidth = (ImageButton) frameLayout.findViewById(R.id.button_edit_nextwidth);		
-		
+		largerWidth = (ImageButton) frameLayout.findViewById(R.id.button_edit_nextwidth);
+
 		toggleImages.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				showImages = !showImages;
@@ -88,8 +88,6 @@ public class JavascriptModifyFunctions {
 				toggleButtons(TYPE_STYLE);
 			}
 		});
-		
-
 
 		smallerWidth.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
@@ -99,7 +97,7 @@ public class JavascriptModifyFunctions {
 				toggleButtons(TYPE_COL);
 			}
 		});
-		
+
 		largerWidth.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (currentTypesSelected[TYPE_COL] < mobileCols.length - 1) {
@@ -114,11 +112,11 @@ public class JavascriptModifyFunctions {
 				if (currentTypesSelected[TYPE_SIZE] > 0) {
 					setTheme(webView, TYPE_SIZE, --currentTypesSelected[TYPE_SIZE]);
 					Log.e("test", "test");
-				}				
+				}
 				toggleButtons(TYPE_SIZE);
 			}
 		});
-		
+
 		largerText.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				if (currentTypesSelected[TYPE_SIZE] < mobileSizes.length - 1) {
@@ -131,14 +129,14 @@ public class JavascriptModifyFunctions {
 	}
 
 	protected static void displayLinks(WebView webView) {
-		if (showLinks) {			
-			webView.loadUrl("javascript:(function() { " +
-					"$('abc').replaceWith(function() { return '<a href=\"'+$(this).attr('href')+'\" >'+this.innerHTML+'</a>'; });"+
-			"})()");
+		if (showLinks) {
+			webView.loadUrl("javascript:(function() { "
+			        + "$('abc').replaceWith(function() { return '<a href=\"'+$(this).attr('href')+'\" >'+this.innerHTML+'</a>'; });"
+			        + "})()");
 		} else {
-			webView.loadUrl("javascript:(function() { " +
-					"$('a').replaceWith(function() { return '<abc href=\"'+$(this).attr('href')+'\" >'+this.innerHTML+'</abc>'; });"+
-			"})()");
+			webView.loadUrl("javascript:(function() { "
+			        + "$('a').replaceWith(function() { return '<abc href=\"'+$(this).attr('href')+'\" >'+this.innerHTML+'</abc>'; });"
+			        + "})()");
 		}
 	}
 
@@ -152,17 +150,17 @@ public class JavascriptModifyFunctions {
 
 	public static void toggleButtons(int type) {
 		switch (type) {
-		case TYPE_STYLE: 
+		case TYPE_STYLE:
 			previousTheme.setEnabled(currentTypesSelected[TYPE_STYLE] > 0);
 			nextTheme.setEnabled(currentTypesSelected[TYPE_STYLE] < mobileStyles.length - 1);
 			break;
 
-		case TYPE_SIZE: 
+		case TYPE_SIZE:
 			smallerText.setEnabled(currentTypesSelected[TYPE_SIZE] > 0);
 			largerText.setEnabled(currentTypesSelected[TYPE_SIZE] < mobileSizes.length - 1);
 			break;
-			
-		case TYPE_COL: 
+
+		case TYPE_COL:
 			smallerWidth.setEnabled(currentTypesSelected[TYPE_COL] > 0);
 			largerWidth.setEnabled(currentTypesSelected[TYPE_COL] < mobileSizes.length - 1);
 			break;
@@ -179,7 +177,7 @@ public class JavascriptModifyFunctions {
 		toggleButtons(TYPE_STYLE);
 		toggleButtons(TYPE_SIZE);
 		toggleButtons(TYPE_COL);
-		displayImages(webView);	
+		displayImages(webView);
 		displayLinks(webView);
 		correctImageButton();
 		correctLinkButton();
@@ -220,10 +218,10 @@ public class JavascriptModifyFunctions {
 			break;
 		}
 
-		String js = "javascript:(function() { " +
-		"var originalClass = $('#rdb-article').attr('class');" +
-		"$('#rdb-article').attr('class', originalClass.replace(/mobile-" + editNames[type] + "-[a-zA-Z0-9-_]*/, 'mobile-" + editNames[type] + "-" + useArray[value].toLowerCase() + "'))" +
-		"})()";
+		String js = "javascript:(function() { "
+		+ "var originalClass = $('#rdb-article').attr('class');"
+		+ "$('#rdb-article').attr('class', originalClass.replace(/mobile-" + editNames[type] + "-[a-zA-Z0-9-_]*/, 'mobile-" + editNames[type] + "-" + useArray[value].toLowerCase() + "'))"
+		+ "})()";
 		Log.e("js", js);
 		Log.e("defaults", String.format("%d,%d,%d", currentTypesSelected[0], currentTypesSelected[1], currentTypesSelected[2]));
 

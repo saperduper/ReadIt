@@ -86,14 +86,14 @@ public class MainMenu extends Activity {
 		super.onDestroy();
 		database.close();
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 	    MenuInflater inflater = getMenuInflater();
 	    inflater.inflate(R.menu.menu_clear, menu);
 	    return true;
 	}
-	
+
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    // Handle item selection
 	    switch (item.getItemId()) {
@@ -107,7 +107,7 @@ public class MainMenu extends Activity {
 	    }
 	    return false;
 	}
-	
+
 	public void setupViews() {
 		boolean authorized = checkAuthorization(this);
 		Log.e("authorization", "is " + authorized);
@@ -166,9 +166,8 @@ public class MainMenu extends Activity {
 				}
 			});
 
-		}
-		//not authorized yet
-		else {
+		} else {
+		  //not authorized yet
 			settingsButton.setImageResource(R.drawable.icon_auth);
 			settingsText.setText("Authorize");
 
@@ -260,11 +259,11 @@ public class MainMenu extends Activity {
 						myHandler.sendMessage(msg);
 					} else {
 						SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-						String oauthToken = preferences.getString("oauth_token", null); 
+						String oauthToken = preferences.getString("oauth_token", null);
 						String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 						String oauthVerifier = preferences.getString("oauth_verifier", null);
 						String extraParams = String.format(
-								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 								oauthToken, oauthTokenSecret, oauthVerifier);
 						String bookmarksUrl = requestApiUrl("bookmarks", API_SECRET + oauthTokenSecret, extraParams);
 						List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -276,8 +275,7 @@ public class MainMenu extends Activity {
 						msg.what = MSG_END;
 						myHandler.sendMessage(msg);
 					}
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -327,8 +325,9 @@ public class MainMenu extends Activity {
 					BufferedReader buffReader = new BufferedReader(new InputStreamReader(resRequest.getEntity().getContent()));
 					String tokenString = buffReader.readLine();
 
-					if (tokenString == null)
+					if (tokenString == null) {
 						return;
+					}
 					Uri parseTokens = Uri.parse("?" + tokenString);
 					final String oauthToken = parseTokens.getQueryParameter("oauth_token");
 					final String oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
@@ -383,14 +382,15 @@ public class MainMenu extends Activity {
 
 						Log.e("oathtoken" , oauthToken + " hi");
 						Log.e("oathtoken" , oauthTokenSecret + " hi");
-						if (oauthToken == null || oauthTokenSecret == null)
+						if (oauthToken == null || oauthTokenSecret == null) {
 							throw new NullPointerException();
+						}
 						HttpClient httpclient = new DefaultHttpClient();
 						String oauthVerifier = uri.getQueryParameter("oauth_verifier");
 						Log.e("uri", uri.getQuery());
-						String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret, 
-								String.format(
-										"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+						String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret,
+						        String.format(
+										"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 										oauthToken, oauthTokenSecret, oauthVerifier));
 						Log.e("url", url);
 						HttpGet httpget = new HttpGet(url);
@@ -400,8 +400,9 @@ public class MainMenu extends Activity {
 						String tokenString = a.readLine();
 
 						Log.e("tokenString", tokenString + " hello");
-						if (tokenString == null)
+						if (tokenString == null) {
 							throw new NullPointerException();
+						}
 						Uri parseTokens = Uri.parse("?" + tokenString);
 						oauthToken = parseTokens.getQueryParameter("oauth_token");
 						oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
@@ -513,7 +514,7 @@ public class MainMenu extends Activity {
 
 				List <NameValuePair> nvps = new ArrayList <NameValuePair>();
 				nvps.add(new BasicNameValuePair("url", url));
-				
+
 				InputStream bookmarksSource = HelperMethods.postStream("https://readability.com/api/shortener/v1/urls", nvps);
 
 				//Log.e("bookmarksSource", bookmarksSource.toString() + "abc");
@@ -521,8 +522,7 @@ public class MainMenu extends Activity {
 				Reader bookmarkReader = new InputStreamReader(bookmarksSource);
 				RDD rdd = bookmarkGson.fromJson(bookmarkReader, RDD.class);
 				return rdd.meta.rdd_url;
-			}
-			catch (Exception e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				return urlError;
 			}
@@ -540,7 +540,7 @@ public class MainMenu extends Activity {
 		String previousUpdate;
 		protected void onPreExecute() {
 			preferences = getSharedPreferences(PREF_NAME, 0);
-			oauthToken = preferences.getString("oauth_token", null); 
+			oauthToken = preferences.getString("oauth_token", null);
 			oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 			oauthVerifier = preferences.getString("oauth_verifier", null);
 			previousUpdate = preferences.getString("previous_update", ZERO_UPDATE);
@@ -560,7 +560,7 @@ public class MainMenu extends Activity {
 			String extraParams = "";
 			Log.e("previousUpdate", previousUpdate);
 			extraParams = String.format(
-					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s", 
+					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s",
 					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0, 10));
 
 			//			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -592,7 +592,7 @@ public class MainMenu extends Activity {
 					latestUpdate = bm.date_updated.split(" ")[0];
 				}
 				values.put(DATE_UPDATED, bm.date_updated);
-				values.put(READ_PERCENT, bm.read_percent);	
+				values.put(READ_PERCENT, bm.read_percent);
 				values.put(FAVORITE, bm.favorite);
 				values.put(BOOKMARK_ID, bm.id);
 				values.put(DATE_ADDED, bm.date_added);
@@ -619,14 +619,14 @@ public class MainMenu extends Activity {
 						Log.e("url: ", "http://readability.com/mobile/articles/" + bm.article.id);
 						values.put(ARTICLE_CONTENT, html);
 						database.insert(ARTICLE_TABLE, null, values);
-						Log.e("inserted", bm.article.title );
+						Log.e("inserted", bm.article.title);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else {
 					values.put(ARTICLE_CONTENT, "");
 					database.insert(ARTICLE_TABLE, null, values);
-					Log.e("inserted", bm.article.title );
+					Log.e("inserted", bm.article.title);
 				}
 
 				count++;
@@ -654,7 +654,7 @@ public class MainMenu extends Activity {
 			if (progressDialog.isShowing()) {
 				progressDialog.dismiss();
 			}
-			if (unused == false) {
+			if (!unused) {
 				displayAlert(MainMenu.this, "Error", "Could not connect to readability.com, please check your internet connection status and try again.");
 			}
 			if (skip) {

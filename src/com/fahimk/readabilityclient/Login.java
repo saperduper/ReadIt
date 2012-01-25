@@ -36,8 +36,8 @@ import android.widget.Button;
 
 public class Login extends Activity {
 
-	String oauthToken;
-	String oauthTokenSecret;
+    String oauthToken;
+    String oauthTokenSecret;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -112,9 +112,9 @@ public class Login extends Activity {
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				String oauthVerifier = uri.getQueryParameter("oauth_verifier");
-				String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret, 
-						String.format(
-								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+				String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret,
+				        String.format(
+								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 								oauthToken, oauthTokenSecret, oauthVerifier));
 				HttpGet httpget = new HttpGet(url);
 				HttpResponse response = httpclient.execute(httpget);
@@ -142,17 +142,17 @@ public class Login extends Activity {
 			Log.e("error", "empty");
 		}
 	}
-	
+
 	public class ReadUrlTask extends AsyncTask<String, Void, Boolean> {
 
 		@Override
 		protected Boolean doInBackground(String... urls) {
 			String url = urls[0];
-			
+
 			try {
 				DefaultHttpClient mHttpClient = new DefaultHttpClient();
 				BasicHttpContext mHttpContext = new BasicHttpContext();
-				CookieStore mCookieStore      = new BasicCookieStore();        
+				CookieStore mCookieStore      = new BasicCookieStore();
 				mHttpContext.setAttribute(ClientContext.COOKIE_STORE, mCookieStore);
 
 				HttpGet httpget = new HttpGet("https://www.readability.com/shorten");
@@ -188,14 +188,13 @@ public class Login extends Activity {
 				int begin = line.indexOf("/articles/");
 				int end = line.indexOf("\"", begin);
 				Log.e("string", line.substring(begin + articlesObject.length(), end));
-				
+
 			} catch (Exception e) {
 				Log.e("error", e.getLocalizedMessage());
 			}
 			return true;
 		}
-		
-	}
 
+	}
 
 }

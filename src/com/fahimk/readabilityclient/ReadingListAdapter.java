@@ -55,15 +55,14 @@ public class ReadingListAdapter extends BaseAdapter {
 		if (entry.archive.equals("1")) {
 			tvContent.setText("");
 		} else if (content != null) {
-			int indexOfStart = content.indexOf("<div class=\"post_body\">");
-			String removeTop = content.substring(indexOfStart == -1 ? 0 : indexOfStart);
+		    int indexOfStart = content.indexOf("<div class=\"post_body\">");
+		    String removeTop = content.substring(indexOfStart == -1 ? 0 : indexOfStart);
 			Matcher m = Pattern.compile("<.+?>").matcher(removeTop);
 			String strippedContent = m.replaceAll("");
 			strippedContent = strippedContent.replaceAll(entry.domain, "");
-			tvContent.setText(strippedContent.trim().substring(0, Math.min(90, strippedContent.length())).trim() + (("".equals(strippedContent)) ? "" : "..." ));
+			tvContent.setText(strippedContent.trim().substring(0, Math.min(90, strippedContent.length())).trim() + (("".equals(strippedContent)) ? "" : "..."));
 		}
 		return convertView;
 	}
-
 
 }

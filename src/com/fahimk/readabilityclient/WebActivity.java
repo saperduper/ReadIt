@@ -72,22 +72,21 @@ public class WebActivity extends Activity {
 		boolean fullScreen = sharedPreferences.getBoolean("fullScreen", false);
 		if (fullScreen) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
-					WindowManager.LayoutParams.FLAG_FULLSCREEN);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+			        WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		} else {
 			getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		}
 		setContentView(R.layout.web);
 		if (!fullScreen) {
-			getWindow().setFeatureInt( Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
+			getWindow().setFeatureInt(Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 		}
 		setupCustomPanel();
 		webView = (WebView) this.findViewById(R.id.webView);
 
 		final Activity MyActivity = this;
 		webView.setWebChromeClient(new WebChromeClient() {
-			public void onProgressChanged(WebView view, int progress)   
-			{
+			public void onProgressChanged(WebView view, int progress) {
 				//Make the bar disappear after URL is loaded, and changes string to Loading...
 				MyActivity.setTitle("Loading...");
 				MyActivity.setProgress(progress * 100); //Make the bar disappear after URL is loaded
@@ -114,9 +113,8 @@ public class WebActivity extends Activity {
 			title = data.getString("article_title");
 			Log.e("read_percent", "read_percent string = " + data.getString("read_percent"));
 			try {
-				readPercent = Float.valueOf(data.getString("read_percent")).floatValue();
-			}
-			catch (Exception e) {
+			    readPercent = Float.valueOf(data.getString("read_percent")).floatValue();
+			} catch (Exception e) {
 				// read_percent can stay 0.0 for all I care
 			}
 			Log.e("read_percent", "read_percent float = " + readPercent);
@@ -124,18 +122,16 @@ public class WebActivity extends Activity {
 		Log.e("url", url + "hi");
 		if (url != null && (content == null || content.length() < 3)) {
 			try {
-				String s = "http://www.readability.com/mobile/articles/" + url;
+			    String s = "http://www.readability.com/mobile/articles/" + url;
 				getHTMLThread(s);
 			} catch (Exception e) {
 				Log.e("exception loading url", e.getMessage());
 			}
-		}
-		else {
+		} else {
 			Log.e("content", content);
 			initializeWV(content);
 		}
 		//Log.e("content", content);
-
 	}
 
 	@Override
@@ -147,9 +143,8 @@ public class WebActivity extends Activity {
 		Log.v("getScale", "" + webView.getScale());
 		if ((int) (webView.getScrollY() + webView.getHeight()) >= (int) (webView.getContentHeight() * webView.getScale())) {
 			progress = 1;
-		}
-		else {
-			progress = (webView.getScrollY()) / (webView.getContentHeight() * webView.getScale());
+		} else {
+		    progress = (webView.getScrollY()) / (webView.getContentHeight() * webView.getScale());
 		}
 		Log.v("back", "progress = " + progress);
 		readPercent = progress;
@@ -168,7 +163,7 @@ public class WebActivity extends Activity {
 
 
 	private void getHTMLThread(final String url) throws Exception {
-		ProgressDialog pDialog = HelperMethods.createProgressDialog(WebActivity.this, "Loading", "retrieving content...");
+	    ProgressDialog pDialog = HelperMethods.createProgressDialog(WebActivity.this, "Loading", "retrieving content...");
 		pDialog.show();
 		final Handler myHandler = new WebHandler(pDialog);
 		final Message msg = new Message();
@@ -215,14 +210,14 @@ public class WebActivity extends Activity {
 				archive = "0";
 			}
 			if (favorite.equals("0")) {
-				fav.setIcon(android.R.drawable.btn_star_big_off);
+			    fav.setIcon(android.R.drawable.btn_star_big_off);
 			} else {
 				fav.setIcon(android.R.drawable.btn_star_big_on);
 			}
 			if (archive.equals("0")) {
-				arc.setIcon(android.R.drawable.checkbox_off_background);
+			    arc.setIcon(android.R.drawable.checkbox_off_background);
 			} else {
-				arc.setIcon(android.R.drawable.checkbox_on_background);
+			    arc.setIcon(android.R.drawable.checkbox_on_background);
 			}
 		}
 		return true;
@@ -245,7 +240,7 @@ public class WebActivity extends Activity {
 			if (checkAuthorization(this)) {
 				addBookmark(fullUrl);
 			} else {
-				displayAlert(this, "Save bookmark", "To save bookmarks for later reading, you need an account on readability.com. To open an account, go back to the main menu, and click the authorize button.");
+			    displayAlert(this, "Save bookmark", "To save bookmarks for later reading, you need an account on readability.com. To open an account, go back to the main menu, and click the authorize button.");
 			}
 			return true;
 		case R.id.menu_share:
@@ -272,15 +267,15 @@ public class WebActivity extends Activity {
 			if (title != null) {
 				title = URLEncoder.encode(title, "UTF-8");
 			} else {
-				title = URLEncoder.encode(webView.getTitle(), "UTF-8");
+			    title = URLEncoder.encode(webView.getTitle(), "UTF-8");
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
-		} 
+		}
 		twitterButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://twitter.com/intent/tweet?text=" + title + "&url=http%3A%2F%2Frdd.me%2F" + url + "&via=readability"));
+			    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://twitter.com/intent/tweet?text=" + title + "&url=http%3A%2F%2Frdd.me%2F" + url + "&via=readability"));
 				startActivity(browserIntent);
 			}
 		});
@@ -288,7 +283,7 @@ public class WebActivity extends Activity {
 		faceButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.readability.com%2Farticles%2F" + url));
+			    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Fwww.readability.com%2Farticles%2F" + url));
 				startActivity(browserIntent);
 			}
 		});
@@ -296,14 +291,14 @@ public class WebActivity extends Activity {
 		emailButton.setOnClickListener(new View.OnClickListener() {
 
 			public void onClick(View v) {
-				Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.readability.com/articles/" + url + "/email"));
+			    Intent browserIntent = new Intent("android.intent.action.VIEW", Uri.parse("http://www.readability.com/articles/" + url + "/email"));
 				startActivity(browserIntent);
 			}
 		});
 	}
 
 	private void updateReadPercent() {
-		ProgressDialog pDialog = HelperMethods.createProgressDialog(WebActivity.this, "Loading", "saving read position...");
+	    ProgressDialog pDialog = HelperMethods.createProgressDialog(WebActivity.this, "Loading", "saving read position...");
 		final Handler myHandler = new WebHandler(pDialog);
 		final Message msg = new Message();
 		new Thread() {
@@ -311,11 +306,11 @@ public class WebActivity extends Activity {
 				try {
 					Looper.prepare();
 					SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-					String oauthToken = preferences.getString("oauth_token", null); 
+					String oauthToken = preferences.getString("oauth_token", null);
 					String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 					String oauthVerifier = preferences.getString("oauth_verifier", null);
 					String extraParams = String.format(
-							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 							oauthToken, oauthTokenSecret, oauthVerifier);
 					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -325,8 +320,7 @@ public class WebActivity extends Activity {
 					msg.what = MSG_END;
 					msg.arg1 = MSG_WV_READ_PERCENT;
 					myHandler.sendMessage(msg);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -349,11 +343,11 @@ public class WebActivity extends Activity {
 				try {
 					Looper.prepare();
 					SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-					String oauthToken = preferences.getString("oauth_token", null); 
+					String oauthToken = preferences.getString("oauth_token", null);
 					String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 					String oauthVerifier = preferences.getString("oauth_verifier", null);
 					String extraParams = String.format(
-							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 							oauthToken, oauthTokenSecret, oauthVerifier);
 					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -366,8 +360,7 @@ public class WebActivity extends Activity {
 					msg.arg1 = MSG_WV_ADDFAV;
 					msg.arg2 = Integer.parseInt(favorite);
 					myHandler.sendMessage(msg);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -390,11 +383,11 @@ public class WebActivity extends Activity {
 				try {
 					Looper.prepare();
 					SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-					String oauthToken = preferences.getString("oauth_token", null); 
+					String oauthToken = preferences.getString("oauth_token", null);
 					String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 					String oauthVerifier = preferences.getString("oauth_verifier", null);
 					String extraParams = String.format(
-							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 							oauthToken, oauthTokenSecret, oauthVerifier);
 					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
@@ -406,8 +399,7 @@ public class WebActivity extends Activity {
 					msg.arg1 = MSG_WV_ADDARC;
 					msg.arg2 = Integer.parseInt(archive);
 					myHandler.sendMessage(msg);
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -458,11 +450,11 @@ public class WebActivity extends Activity {
 						myHandler.sendMessage(msg);
 					} else {
 						SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-						String oauthToken = preferences.getString("oauth_token", null); 
+						String oauthToken = preferences.getString("oauth_token", null);
 						String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 						String oauthVerifier = preferences.getString("oauth_verifier", null);
 						String extraParams = String.format(
-								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
+								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s",
 								oauthToken, oauthTokenSecret, oauthVerifier);
 						String bookmarksUrl = requestApiUrl("bookmarks", API_SECRET + oauthTokenSecret, extraParams);
 						List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -488,13 +480,13 @@ public class WebActivity extends Activity {
 
 		public boolean shouldOverrideUrlLoading(WebView view, String url) {
 			Log.e("url", url);
-			if (!url.startsWith("http://www.readability.com") || !url.startsWith("https://www.readability.com")) {  
+			if (!url.startsWith("http://www.readability.com") || !url.startsWith("https://www.readability.com")) {
 
 				Intent i = new Intent(Intent.ACTION_VIEW);
 				i.setData(Uri.parse(url));
 				startActivity(i);
 
-				return true;  
+				return true;
 			} else {
 				view.loadUrl(url);
 				return true;
@@ -505,22 +497,22 @@ public class WebActivity extends Activity {
 		public void onPageFinished(WebView view, String url) {
 			Toast message2 = Toast.makeText(WebActivity.this, "Press the menu button to customize text and modify the bookmark.", Toast.LENGTH_LONG);
 			message2.show();
-			view.loadUrl("javascript:(function() { " +  
-					"var readBar = document.getElementById('read-bar'); readBar.parentNode.removeChild(readBar);"+
-					"var footNote = document.getElementById('article-marketing'); footNote.parentNode.removeChild(footNote);"+
-					"var bottom = document.getElementById('article-nav'); bottom.parentNode.removeChild(bottom);" +
-					"})()");  
-			view.loadUrl("javascript:(function() {" +
-					"$(document).ready(function() {" +
-					"$('body').scrollTop($('body').outerHeight() * " + readPercent + " )" +
-					"});" +
-					"})()");
+			view.loadUrl("javascript:(function() { "
+			        + "var readBar = document.getElementById('read-bar'); readBar.parentNode.removeChild(readBar);"
+			        + "var footNote = document.getElementById('article-marketing'); footNote.parentNode.removeChild(footNote);"
+			        + "var bottom = document.getElementById('article-nav'); bottom.parentNode.removeChild(bottom);"
+			        + "})()");
+			view.loadUrl("javascript:(function() {"
+			        + "$(document).ready(function() {"
+			        + "$('body').scrollTop($('body').outerHeight() * " + readPercent + " )"
+			        + "});"
+			        + "})()");
 
 			//need better algorithm for this based on number of words
 			//view.scrollTo(0, (int) (scrollPosition * view.getContentHeight() + view.getHeight()));
 			addButtonListeners(findViewById(R.id.mainFrame), webView);
 			setupDefaultTheme(webView);
-		} 
+		}
 
 	}
 
@@ -536,8 +528,9 @@ public class WebActivity extends Activity {
 		public void handleMessage(Message msg) {
 			switch (msg.what) {
 			case MSG_END:
-				if (pDialog.isShowing())
+				if (pDialog.isShowing()) {
 					pDialog.dismiss();
+				}
 				switch (msg.arg1) {
 				case MSG_WV_ADDFAV:
 					String action = (msg.arg2 == 0) ? "Removed from" : "Added to";
@@ -545,7 +538,7 @@ public class WebActivity extends Activity {
 					message.show();
 					break;
 				case MSG_WV_ADDARC:
-					String action3 = (msg.arg2 == 0) ? "Removed from" : "Added to"; 
+					String action3 = (msg.arg2 == 0) ? "Removed from" : "Added to";
 					Toast message3 = Toast.makeText(WebActivity.this, action3 + " archive.", Toast.LENGTH_LONG);
 					message3.show();
 					break;
@@ -587,7 +580,7 @@ public class WebActivity extends Activity {
 
 		protected void onPreExecute() {
 			preferences = getSharedPreferences(PREF_NAME, 0);
-			oauthToken = preferences.getString("oauth_token", null); 
+			oauthToken = preferences.getString("oauth_token", null);
 			oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 			oauthVerifier = preferences.getString("oauth_verifier", null);
 			previousUpdate = preferences.getString("previous_update", ZERO_UPDATE);
@@ -597,7 +590,7 @@ public class WebActivity extends Activity {
 			String extraParams = "";
 			Log.e("previousUpdate", previousUpdate);
 			extraParams = String.format(
-					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s", 
+					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s",
 					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0, 10));
 
 			//			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
@@ -628,7 +621,7 @@ public class WebActivity extends Activity {
 					latestUpdate = bm.date_updated.split(" ")[0];
 				}
 				values.put(DATE_UPDATED, bm.date_updated);
-				values.put(READ_PERCENT, bm.read_percent);	
+				values.put(READ_PERCENT, bm.read_percent);
 				values.put(FAVORITE, bm.favorite);
 				values.put(BOOKMARK_ID, bm.id);
 				values.put(DATE_ADDED, bm.date_added);
@@ -654,14 +647,14 @@ public class WebActivity extends Activity {
 						String html = parseHTML("http://readability.com/mobile/articles/" + bm.article.id);
 						values.put(ARTICLE_CONTENT, html);
 						database.insert(ARTICLE_TABLE, null, values);
-						Log.e("inserted", bm.article.title );
+						Log.e("inserted", bm.article.title);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
 				} else {
 					values.put(ARTICLE_CONTENT, "");
 					database.insert(ARTICLE_TABLE, null, values);
-					Log.e("inserted", bm.article.title );
+					Log.e("inserted", bm.article.title);
 				}
 
 			}

@@ -10,7 +10,7 @@ public class Article {
     public String favorite;
     public String archive;
     public String read_percent;
-    
+
     public Article(String url, String domain, String id, String title, String content, String bookmark_id, String favorite, String archive, String read_percent) {
 		super();
 		this.url = url;

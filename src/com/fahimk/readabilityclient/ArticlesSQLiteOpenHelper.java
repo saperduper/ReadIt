@@ -29,7 +29,7 @@ public class ArticlesSQLiteOpenHelper extends SQLiteOpenHelper {
 	public static final String DATE_FAVORITED = "date_favorited";
 	public static final String ARCHIVE = "archive";
 	Context c;
-	
+
 	public ArticlesSQLiteOpenHelper(Context context) {
 		super(context, DB_NAME, null, VERSION);
 		c = context;
@@ -52,25 +52,25 @@ public class ArticlesSQLiteOpenHelper extends SQLiteOpenHelper {
 
 	protected void createTables(SQLiteDatabase db) {
 		db.execSQL(
-				"create table " + ARTICLE_TABLE + " (" +
-				MY_ID + " integer primary key autoincrement not null, " +
-				ARTICLE_AUTHOR + " text, " +
-				ARTICLE_CONTENT + " text, " +
-				ARTICLE_CONTENT_SIZE + " integer, " + 
-				ARTICLE_DOMAIN + " text, " +
-				ARTICLE_SHORT_URL + " text, " +
-				ARTICLE_TITLE + " text, " +
-				ARTICLE_URL + " text, " +
-				READ_PERCENT + " real, " +
-				DATE_UPDATED + " text, " +
-				FAVORITE + " integer, " +
-				ARTICLE_ID + " integer, " +
-				BOOKMARK_ID + " integer, " +
-				DATE_ADDED + " text, " +
-				ARTICLE_HREF + " text, " +
-				DATE_FAVORITED + " text, " +
-				ARCHIVE + " integer" +
-				");"
+				"create table " + ARTICLE_TABLE + " ("
+				+ MY_ID + " integer primary key autoincrement not null, "
+				+ ARTICLE_AUTHOR + " text, "
+				+ ARTICLE_CONTENT + " text, "
+				+ ARTICLE_CONTENT_SIZE + " integer, "
+				+ ARTICLE_DOMAIN + " text, "
+				+ ARTICLE_SHORT_URL + " text, "
+				+ ARTICLE_TITLE + " text, "
+				+ ARTICLE_URL + " text, "
+				+ READ_PERCENT + " real, "
+				+ DATE_UPDATED + " text, "
+				+ FAVORITE + " integer, "
+				+ ARTICLE_ID + " integer, "
+				+ BOOKMARK_ID + " integer, "
+				+ DATE_ADDED + " text, "
+				+ ARTICLE_HREF + " text, "
+				+ DATE_FAVORITED + " text, "
+				+ ARCHIVE + " integer"
+				+ ");"
 		);
 	}
 
