@@ -38,11 +38,9 @@ public class HelperMethods {
 	public final static String URL_API = "https://www.readability.com/api/rest/v1/";
 	public final static String URL_CALLBACK = "com.fahimk://readability";
 
-
 	public final static String OAUTH_AUTHORIZE = "oauth/authorize/";
 	public final static String OAUTH_REQUEST = "oauth/request_token/";
 	public final static String OAUTH_ACCESS = "oauth/access_token/";
-
 
 	public final static int MSG_END = 1;
 	public final static int MSG_FAIL = 2;
@@ -71,7 +69,7 @@ public class HelperMethods {
 		String url = String.format(URL_API + "%s?&oauth_nonce=%s&oauth_timestamp=%s" + 
 				"&oauth_consumer_key=%s&oauth_signature=%s&oauth_signature_method=PLAINTEXT" +
 				"&xoauth_lang_pref=en-us%s", 
-				page,getNonce(),getTimestamp(),API_KEY,apiSecret,extras);
+				page, getNonce(), getTimestamp(), API_KEY, apiSecret, extras);
 
 		return url;
 	}
@@ -105,10 +103,9 @@ public class HelperMethods {
 		button.setOnTouchListener(new View.OnTouchListener() {
 
 			public boolean onTouch(View v, MotionEvent m) {
-				if(m.getAction() == MotionEvent.ACTION_DOWN) {
+				if (m.getAction() == MotionEvent.ACTION_DOWN) {
 					darkenImage((ImageView) v);
-				}
-				else if (m.getAction() == MotionEvent.ACTION_UP){
+				} else if (m.getAction() == MotionEvent.ACTION_UP) {
 					((ImageView) v).setColorFilter(null);
 				}
 				return false;
@@ -137,8 +134,7 @@ public class HelperMethods {
 
 			return getResponse.getEntity().getContent();
 
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			getRequest.abort();
 			Log.w("HelperMethods.retrieveStream", "Error for URL " + url, e);
 		}
@@ -161,8 +157,7 @@ public class HelperMethods {
 
 			return getResponse.getEntity().getContent();
 
-		} 
-		catch (IOException e) {
+		} catch (IOException e) {
 			getRequest.abort();
 			Log.w("HelperMethods.retrieveStream", "Error for URL " + url, e);
 		}
@@ -179,8 +174,7 @@ public class HelperMethods {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		StringBuilder str = new StringBuilder();
 		String line = null;
-		while((line = reader.readLine()) != null)
-		{
+		while ((line = reader.readLine()) != null) {
 			str.append(line);
 		}
 		in.close();
@@ -200,8 +194,7 @@ public class HelperMethods {
 		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		StringBuilder str = new StringBuilder();
 		String line = null;
-		while((line = reader.readLine()) != null)
-		{
+		while ((line = reader.readLine()) != null) {
 			str.append(line);
 		}
 		in.close();
@@ -226,7 +219,8 @@ public class HelperMethods {
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				return;
-			} }); 
+			}
+		}); 
 		alertDialog.show();
 	}
 	
@@ -238,7 +232,8 @@ public class HelperMethods {
 		alertDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int which) {
 				return;
-			} }); 
+			} 
+		}); 
 		alertDialog.show();
 	}
 

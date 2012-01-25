@@ -51,7 +51,7 @@ import com.google.gson.Gson;
 
 public class WebActivity extends Activity {
 	private WebView webView;
-	int key=0;
+	int key = 0;
 	boolean articleSaved = false;
 	boolean authorized = false;
 	String favorite = "0";
@@ -70,7 +70,7 @@ public class WebActivity extends Activity {
 
 		SharedPreferences sharedPreferences  = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		boolean fullScreen = sharedPreferences.getBoolean("fullScreen", false);
-		if(fullScreen) {
+		if (fullScreen) {
 			requestWindowFeature(Window.FEATURE_NO_TITLE);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, 
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -78,11 +78,11 @@ public class WebActivity extends Activity {
 			getWindow().requestFeature(Window.FEATURE_PROGRESS);
 		}
 		setContentView(R.layout.web);
-		if(!fullScreen) {
+		if (!fullScreen) {
 			getWindow().setFeatureInt( Window.FEATURE_PROGRESS, Window.PROGRESS_VISIBILITY_ON);
 		}
 		setupCustomPanel();
-		webView = (WebView)this.findViewById(R.id.webView);
+		webView = (WebView) this.findViewById(R.id.webView);
 
 		final Activity MyActivity = this;
 		webView.setWebChromeClient(new WebChromeClient() {
@@ -93,8 +93,9 @@ public class WebActivity extends Activity {
 				MyActivity.setProgress(progress * 100); //Make the bar disappear after URL is loaded
 
 				// Return the app name after finish loading
-				if(progress == 100)
+				if (progress == 100) {
 					MyActivity.setTitle("ReadIt");
+				}
 			}
 		});
 
@@ -102,7 +103,7 @@ public class WebActivity extends Activity {
 
 		String content = "";
 		authorized = checkAuthorization(this);
-		if(data != null) {
+		if (data != null) {
 			content = data.getString("article_content");
 			url = data.getString("article_url");
 			articleSaved = data.getBoolean("saved");
@@ -121,9 +122,9 @@ public class WebActivity extends Activity {
 			Log.e("read_percent", "read_percent float = " + readPercent);
 		}
 		Log.e("url", url + "hi");
-		if(url != null && (content == null || content.length() < 3)) {
+		if (url != null && (content == null || content.length() < 3)) {
 			try {
-				String s = "http://www.readability.com/mobile/articles/"+url;
+				String s = "http://www.readability.com/mobile/articles/" + url;
 				getHTMLThread(s);
 			} catch (Exception e) {
 				Log.e("exception loading url", e.getMessage());
@@ -144,7 +145,7 @@ public class WebActivity extends Activity {
 		Log.v("getHeight", "" + webView.getHeight());
 		Log.v("getContentHeight", "" + webView.getContentHeight());
 		Log.v("getScale", "" + webView.getScale());
-		if ((int)(webView.getScrollY() + webView.getHeight()) >= (int)(webView.getContentHeight() * webView.getScale())) {
+		if ((int) (webView.getScrollY() + webView.getHeight()) >= (int) (webView.getContentHeight() * webView.getScale())) {
 			progress = 1;
 		}
 		else {
@@ -181,12 +182,10 @@ public class WebActivity extends Activity {
 					msg.arg1 = MSG_WV_INIT;
 					myHandler.sendMessage(msg);
 
-				}
-				catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
-
 				}
 			}
 
@@ -196,10 +195,9 @@ public class WebActivity extends Activity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
-		if(articleSaved) {
+		if (articleSaved) {
 			inflater.inflate(R.menu.menu_authorized, menu);
-		}
-		else {
+		} else {
 			inflater.inflate(R.menu.menu_guest, menu);
 		}
 		return true;
@@ -207,25 +205,23 @@ public class WebActivity extends Activity {
 
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		super.onPrepareOptionsMenu(menu);
-		if(articleSaved) {
+		if (articleSaved) {
 			MenuItem fav = (MenuItem) menu.getItem(0);
 			MenuItem arc = (MenuItem) menu.getItem(1);
-			if(favorite == null) {
+			if (favorite == null) {
 				favorite = "0";
 			}
-			if(archive == null) {
+			if (archive == null) {
 				archive = "0";
 			}
-			if(favorite.equals("0")){
+			if (favorite.equals("0")) {
 				fav.setIcon(android.R.drawable.btn_star_big_off);
-			}
-			else {
+			} else {
 				fav.setIcon(android.R.drawable.btn_star_big_on);
 			}
-			if(archive.equals("0")) {
+			if (archive.equals("0")) {
 				arc.setIcon(android.R.drawable.checkbox_off_background);
-			}
-			else {
+			} else {
 				arc.setIcon(android.R.drawable.checkbox_on_background);
 			}
 		}
@@ -246,10 +242,9 @@ public class WebActivity extends Activity {
 			showPanel();
 			return true;
 		case R.id.menu_readlater:
-			if(checkAuthorization(this)) {
+			if (checkAuthorization(this)) {
 				addBookmark(fullUrl);
-			}
-			else {
+			} else {
 				displayAlert(this, "Save bookmark", "To save bookmarks for later reading, you need an account on readability.com. To open an account, go back to the main menu, and click the authorize button.");
 			}
 			return true;
@@ -274,11 +269,10 @@ public class WebActivity extends Activity {
 		ImageButton emailButton = (ImageButton) shareDialog.findViewById(R.id.button_share_email);
 
 		try {
-			if(title != null) {
-				title = URLEncoder.encode(title,"UTF-8");
-			}
-			else {
-				title = URLEncoder.encode(webView.getTitle(),"UTF-8");
+			if (title != null) {
+				title = URLEncoder.encode(title, "UTF-8");
+			} else {
+				title = URLEncoder.encode(webView.getTitle(), "UTF-8");
 			}
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
@@ -323,7 +317,7 @@ public class WebActivity extends Activity {
 					String extraParams = String.format(
 							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
 							oauthToken, oauthTokenSecret, oauthVerifier);
-					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID +"/", API_SECRET + oauthTokenSecret, extraParams);
+					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("read_percent", String.format("%.2g%n", readPercent)));
 					String message = HelperMethods.postData(bookmarksUrl, nameValuePairs);
@@ -361,7 +355,7 @@ public class WebActivity extends Activity {
 					String extraParams = String.format(
 							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
 							oauthToken, oauthTokenSecret, oauthVerifier);
-					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID +"/", API_SECRET + oauthTokenSecret, extraParams);
+					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("favorite", favorite));
 					nameValuePairs.add(new BasicNameValuePair("archive", archive));
@@ -402,7 +396,7 @@ public class WebActivity extends Activity {
 					String extraParams = String.format(
 							"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
 							oauthToken, oauthTokenSecret, oauthVerifier);
-					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID +"/", API_SECRET + oauthTokenSecret, extraParams);
+					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID + "/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
 					nameValuePairs.add(new BasicNameValuePair("archive", archive));
 					nameValuePairs.add(new BasicNameValuePair("favorite", favorite));
@@ -458,12 +452,11 @@ public class WebActivity extends Activity {
 			public void run() {
 				try {
 					Looper.prepare();
-					if(url == "" || url.length() < 3) {
+					if (url == "" || url.length() < 3) {
 						msg.what = MSG_END;
 						msg.arg1 = MSG_BAD_URL;
 						myHandler.sendMessage(msg);
-					}
-					else {
+					} else {
 						SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
 						String oauthToken = preferences.getString("oauth_token", null); 
 						String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
@@ -481,8 +474,7 @@ public class WebActivity extends Activity {
 						msg.what = MSG_END;
 						myHandler.sendMessage(msg);
 					}
-				}
-				catch (Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -509,9 +501,8 @@ public class WebActivity extends Activity {
 			}
 		}
 
-
 		@Override
-		public void onPageFinished(WebView view, String url){
+		public void onPageFinished(WebView view, String url) {
 			Toast message2 = Toast.makeText(WebActivity.this, "Press the menu button to customize text and modify the bookmark.", Toast.LENGTH_LONG);
 			message2.show();
 			view.loadUrl("javascript:(function() { " +  
@@ -524,7 +515,6 @@ public class WebActivity extends Activity {
 					"$('body').scrollTop($('body').outerHeight() * " + readPercent + " )" +
 					"});" +
 					"})()");
-
 
 			//need better algorithm for this based on number of words
 			//view.scrollTo(0, (int) (scrollPosition * view.getContentHeight() + view.getHeight()));
@@ -544,11 +534,11 @@ public class WebActivity extends Activity {
 		}
 		@Override
 		public void handleMessage(Message msg) {
-			switch(msg.what) {
+			switch (msg.what) {
 			case MSG_END:
-				if(pDialog.isShowing())
+				if (pDialog.isShowing())
 					pDialog.dismiss();
-				switch(msg.arg1) {
+				switch (msg.arg1) {
 				case MSG_WV_ADDFAV:
 					String action = (msg.arg2 == 0) ? "Removed from" : "Added to";
 					Toast message = Toast.makeText(WebActivity.this, action + " favorites.", Toast.LENGTH_LONG);
@@ -578,8 +568,9 @@ public class WebActivity extends Activity {
 				message4.show();
 				break;
 			case MSG_FAIL:
-				if(pDialog.isShowing())
+				if (pDialog.isShowing()) {
 					pDialog.dismiss();
+				}
 				displayAlert(pDialog.getContext(), "Error", "Could not connect to readability.com, please check your internet connection status and try again.");
 				break;
 			}
@@ -607,7 +598,7 @@ public class WebActivity extends Activity {
 			Log.e("previousUpdate", previousUpdate);
 			extraParams = String.format(
 					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s", 
-					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0,10));
+					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0, 10));
 
 			//			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 			//			Log.e("previousUpdate", previousUpdate);
@@ -617,7 +608,7 @@ public class WebActivity extends Activity {
 			Log.e("url", bookmarksUrl);
 			InputStream bookmarksSource = getStream(bookmarksUrl);
 
-			if(bookmarksSource == null) {
+			if (bookmarksSource == null) {
 				Log.e("bookmarksSource", "url request was empty");
 				return false;
 			}
@@ -630,10 +621,10 @@ public class WebActivity extends Activity {
 			String latestUpdate = ZERO_UPDATE;
 			//Log.e("looking at bookmark", "hello");
 			publishProgress(0, bookmarks.size());
-			for(Bookmark bm : bookmarks) {
+			for (Bookmark bm : bookmarks) {
 				//Log.e("looking at bookmark", bm.article.title);
 				ContentValues values = new ContentValues();
-				if(bm.date_updated.compareTo(latestUpdate) > 0) {
+				if (bm.date_updated.compareTo(latestUpdate) > 0) {
 					latestUpdate = bm.date_updated.split(" ")[0];
 				}
 				values.put(DATE_UPDATED, bm.date_updated);
@@ -655,21 +646,19 @@ public class WebActivity extends Activity {
 						new String[] {MY_ID},
 						whereIDSame, null, null, null, null);
 				Log.e("count", articleCursor.getCount() + " " + bm.id);
-				if(articleCursor.getCount() > 0) {
+				if (articleCursor.getCount() > 0) {
 					database.update(ARTICLE_TABLE, values, whereIDSame, null);
 					Log.e("updated", bm.article.title);
-				}
-				else if(!bm.archive) {
+				} else if (!bm.archive) {
 					try {
-						String html = parseHTML("http://readability.com/mobile/articles/"+bm.article.id);
+						String html = parseHTML("http://readability.com/mobile/articles/" + bm.article.id);
 						values.put(ARTICLE_CONTENT, html);
 						database.insert(ARTICLE_TABLE, null, values);
 						Log.e("inserted", bm.article.title );
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
-				else {
+				} else {
 					values.put(ARTICLE_CONTENT, "");
 					database.insert(ARTICLE_TABLE, null, values);
 					Log.e("inserted", bm.article.title );
@@ -684,5 +673,3 @@ public class WebActivity extends Activity {
 
 	}
 }
-
-

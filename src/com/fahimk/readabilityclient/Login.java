@@ -48,15 +48,15 @@ public class Login extends Activity {
 
 	public void onResume() {
 		super.onResume();
-				SharedPreferences tokenInfo = getBaseContext().getSharedPreferences(PREF_NAME, 0);
-				String token = tokenInfo.getString("oauth_token", null);
-				String tokenSecret = tokenInfo.getString("oauth_token_secret", null);
-				String verifier = tokenInfo.getString("oauth_verifier", null);
-				if(token != null && tokenSecret != null && verifier != null) {
-					Intent intent = new Intent(getBaseContext(), MainMenu.class);
-					startActivity(intent);
-					this.finish();
-				}
+		SharedPreferences tokenInfo = getBaseContext().getSharedPreferences(PREF_NAME, 0);
+		String token = tokenInfo.getString("oauth_token", null);
+		String tokenSecret = tokenInfo.getString("oauth_token_secret", null);
+		String verifier = tokenInfo.getString("oauth_verifier", null);
+		if (token != null && tokenSecret != null && verifier != null) {
+			Intent intent = new Intent(getBaseContext(), MainMenu.class);
+			startActivity(intent);
+			this.finish();
+		}
 		Log.e("onResume", (token == null) + " ");
 	}
 
@@ -90,9 +90,10 @@ public class Login extends Activity {
 		BufferedReader buffReader = new BufferedReader(new InputStreamReader(resRequest.getEntity().getContent()));
 		String tokenString = buffReader.readLine();
 
-		if (tokenString == null)
+		if (tokenString == null) {
 			return;
-		Uri parseTokens = Uri.parse("?"+tokenString);
+		}
+		Uri parseTokens = Uri.parse("?" + tokenString);
 		oauthToken = parseTokens.getQueryParameter("oauth_token");
 		oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
 		Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(requestApiUrl(OAUTH_AUTHORIZE, API_SECRET, "&" + tokenString)));
@@ -111,7 +112,7 @@ public class Login extends Activity {
 			try {
 				HttpClient httpclient = new DefaultHttpClient();
 				String oauthVerifier = uri.getQueryParameter("oauth_verifier");
-				String url = requestApiUrl(OAUTH_ACCESS, API_SECRET+oauthTokenSecret, 
+				String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret, 
 						String.format(
 								"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
 								oauthToken, oauthTokenSecret, oauthVerifier));
@@ -121,9 +122,10 @@ public class Login extends Activity {
 				BufferedReader a = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 				String tokenString = a.readLine();
 
-				if (tokenString == null)
+				if (tokenString == null) {
 					return;
-				Uri parseTokens = Uri.parse("?"+tokenString);
+				}
+				Uri parseTokens = Uri.parse("?" + tokenString);
 				oauthToken = parseTokens.getQueryParameter("oauth_token");
 				oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
 
@@ -170,7 +172,7 @@ public class Login extends Activity {
 				httpost.setHeader("X-Requested-With", "XMLHttpRequest");
 				List<Cookie> cl = mCookieStore.getCookies();
 				StringBuffer com = new StringBuffer();
-				for(Cookie c: cl) {
+				for (Cookie c: cl) {
 					com.append(c.getName());
 					com.append("=");
 					com.append(c.getValue());
@@ -185,10 +187,9 @@ public class Login extends Activity {
 				String articlesObject = "/articles/";
 				int begin = line.indexOf("/articles/");
 				int end = line.indexOf("\"", begin);
-				Log.e("string", line.substring(begin+articlesObject.length(), end));
+				Log.e("string", line.substring(begin + articlesObject.length(), end));
 				
-			}
-			catch(Exception e) {
+			} catch (Exception e) {
 				Log.e("error", e.getLocalizedMessage());
 			}
 			return true;

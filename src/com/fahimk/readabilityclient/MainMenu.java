@@ -64,7 +64,7 @@ public class MainMenu extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main_menu);
 		String webPageUrl = getIntent().getStringExtra(Intent.EXTRA_TEXT);
-		if(webPageUrl != null) {
+		if (webPageUrl != null) {
 			webPageUrl = webPageUrl.split("\n")[0];
 			GetArticleTask fetchContent = new GetArticleTask();
 			fetchContent.execute(webPageUrl);
@@ -74,11 +74,10 @@ public class MainMenu extends Activity {
 		SharedPreferences sharedPreferences  = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
 		boolean syncNow = sharedPreferences.getBoolean("syncStartup", false);
 		skip = sharedPreferences.getBoolean("skipMenu", false);
-		if(syncNow) {
+		if (syncNow) {
 			SyncArticles task = new SyncArticles();
 			task.execute(skip);
-		}
-		else if(skip) {
+		} else if (skip) {
 			startActivity(new Intent(getBaseContext(), ReadingList.class));
 		}
 	}
@@ -127,11 +126,11 @@ public class MainMenu extends Activity {
 		final ImageView settingsButton = (ImageView) findViewById(R.id.button_settings);
 		final TextView settingsText = (TextView) findViewById(R.id.text_settings);
 
-		if(!debug) {
+		if (!debug) {
 			deleteButton.setVisibility(View.GONE);
 			authorizeButton.setVisibility(View.GONE);
 		}
-		if(authorized) {
+		if (authorized) {
 			settingsButton.setImageResource(R.drawable.icon_settings);
 			settingsText.setText("Settings");
 
@@ -196,11 +195,11 @@ public class MainMenu extends Activity {
 
 		readNowButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
-				InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+				InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 				imm.hideSoftInputFromWindow(urlRead.getWindowToken(), 0);
 				GetArticleTask fetchContent = new GetArticleTask();
 				String url = urlRead.getText().toString();
-				if(!"".equals(url)) {
+				if (!"".equals(url)) {
 					fetchContent.execute(url);
 				}
 
@@ -213,7 +212,7 @@ public class MainMenu extends Activity {
 				if (actionId == EditorInfo.IME_ACTION_GO) {
 					GetArticleTask fetchContent = new GetArticleTask();
 					String url = urlRead.getText().toString();
-					if(!"".equals(url)) {
+					if (!"".equals(url)) {
 						fetchContent.execute(url);
 					}
 				}
@@ -253,14 +252,13 @@ public class MainMenu extends Activity {
 					Looper.prepare();
 					final TextView urlRead = (TextView) findViewById(R.id.edittext_url);
 					String url = urlRead.getText().toString();
-					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(urlRead.getWindowToken(), 0);
-					if("".equals(url) || url.length() < 3) {
+					if ("".equals(url) || url.length() < 3) {
 						msg.what = MSG_END;
 						msg.arg1 = MSG_BAD_URL;
 						myHandler.sendMessage(msg);
-					}
-					else {
+					} else {
 						SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
 						String oauthToken = preferences.getString("oauth_token", null); 
 						String oauthTokenSecret = preferences.getString("oauth_token_secret", null);
@@ -290,7 +288,7 @@ public class MainMenu extends Activity {
 	}
 
 	public void launchWebBrowser(String visitUrl) {
-		if(!"".equals(visitUrl)) {
+		if (!"".equals(visitUrl)) {
 			Intent i = new Intent(getBaseContext(), WebActivity.class);
 			i.putExtra("article_url", visitUrl);
 			i.putExtra("saved", false);
@@ -299,7 +297,7 @@ public class MainMenu extends Activity {
 	}
 
 	public void launchWebBrowser(String visitUrl, String fullUrl) {
-		if(!"".equals(visitUrl)) {
+		if (!"".equals(visitUrl)) {
 			Intent i = new Intent(getBaseContext(), WebActivity.class);
 			i.putExtra("article_url", visitUrl);
 			i.putExtra("full_url", fullUrl);
@@ -331,7 +329,7 @@ public class MainMenu extends Activity {
 
 					if (tokenString == null)
 						return;
-					Uri parseTokens = Uri.parse("?"+tokenString);
+					Uri parseTokens = Uri.parse("?" + tokenString);
 					final String oauthToken = parseTokens.getQueryParameter("oauth_token");
 					final String oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
 
@@ -346,8 +344,7 @@ public class MainMenu extends Activity {
 					msg.what = MSG_END;
 					myHandler.sendMessage(msg);
 
-				}
-				catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 					msg.what = MSG_FAIL;
 					myHandler.sendMessage(msg);
@@ -365,7 +362,7 @@ public class MainMenu extends Activity {
 		setupViews();
 		final Uri uri = getIntent().getData();
 		if (uri != null && uri.toString().startsWith(URL_CALLBACK)) {
-			if(checkAuthorization(this)) {
+			if (checkAuthorization(this)) {
 				return;
 			}
 			ProgressDialog pDialog = HelperMethods.createProgressDialog(MainMenu.this, "Loading", "confirming authorization...");
@@ -391,7 +388,7 @@ public class MainMenu extends Activity {
 						HttpClient httpclient = new DefaultHttpClient();
 						String oauthVerifier = uri.getQueryParameter("oauth_verifier");
 						Log.e("uri", uri.getQuery());
-						String url = requestApiUrl(OAUTH_ACCESS, API_SECRET+oauthTokenSecret, 
+						String url = requestApiUrl(OAUTH_ACCESS, API_SECRET + oauthTokenSecret, 
 								String.format(
 										"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s", 
 										oauthToken, oauthTokenSecret, oauthVerifier));
@@ -405,7 +402,7 @@ public class MainMenu extends Activity {
 						Log.e("tokenString", tokenString + " hello");
 						if (tokenString == null)
 							throw new NullPointerException();
-						Uri parseTokens = Uri.parse("?"+tokenString);
+						Uri parseTokens = Uri.parse("?" + tokenString);
 						oauthToken = parseTokens.getQueryParameter("oauth_token");
 						oauthTokenSecret = parseTokens.getQueryParameter("oauth_token_secret");
 						Log.e("here", "here3");
@@ -446,9 +443,10 @@ public class MainMenu extends Activity {
 		public void handleMessage(Message msg) {
 			switch(msg.what) {
 			case MSG_END:
-				if(pDialog != null && pDialog.isShowing())
+				if (pDialog != null && pDialog.isShowing()) {
 					pDialog.dismiss();
-				switch(msg.arg1) {
+				}
+				switch (msg.arg1) {
 				case MSG_START_SETUPVIEWS:
 					setupViews();
 					break;
@@ -469,8 +467,9 @@ public class MainMenu extends Activity {
 				}
 				break;
 			case MSG_FAIL:
-				if(pDialog.isShowing())
+				if (pDialog.isShowing()) {
 					pDialog.dismiss();
+				}
 				displayAlert(pDialog.getContext(), "Error", "Could not connect to readability.com, please check your internet connection status and try again.");
 				break;
 			}
@@ -486,14 +485,13 @@ public class MainMenu extends Activity {
 		@Override
 		protected void onPostExecute(String url) {
 			Log.e("line", url);
-			if(progress.isShowing()) {
+			if (progress.isShowing()) {
 				progress.dismiss();
 			}
-			if(url.equals(connectionError)) {
+			if (url.equals(connectionError)) {
 				displayAlert(MainMenu.this, "Error", "Could not connect to readability, please check connection and try again.");
 				return;
-			}
-			else if(url.equals(urlError)) {
+			} else if (url.equals(urlError)) {
 				displayAlert(MainMenu.this, "Error", "Could not parse the url, please check the url and try again.");
 				return;
 			}
@@ -563,7 +561,7 @@ public class MainMenu extends Activity {
 			Log.e("previousUpdate", previousUpdate);
 			extraParams = String.format(
 					"&oauth_token=%s&oauth_token_secret=%s&oauth_verifier=%s&updated_since=%s", 
-					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0,10));
+					oauthToken, oauthTokenSecret, oauthVerifier, previousUpdate.substring(0, 10));
 
 			//			List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>(1);
 			//			Log.e("previousUpdate", previousUpdate);
@@ -573,7 +571,7 @@ public class MainMenu extends Activity {
 			Log.e("url", bookmarksUrl);
 			InputStream bookmarksSource = getStream(bookmarksUrl);
 
-			if(bookmarksSource == null) {
+			if (bookmarksSource == null) {
 				Log.e("bookmarksSource", "url request was empty");
 				return false;
 			}
@@ -587,10 +585,10 @@ public class MainMenu extends Activity {
 			//Log.e("looking at bookmark", "hello");
 			int count = 0;
 			publishProgress(0, bookmarks.size());
-			for(Bookmark bm : bookmarks) {
+			for (Bookmark bm : bookmarks) {
 				//Log.e("looking at bookmark", bm.article.title);
 				ContentValues values = new ContentValues();
-				if(bm.date_updated.compareTo(latestUpdate) > 0) {
+				if (bm.date_updated.compareTo(latestUpdate) > 0) {
 					latestUpdate = bm.date_updated.split(" ")[0];
 				}
 				values.put(DATE_UPDATED, bm.date_updated);
@@ -612,22 +610,20 @@ public class MainMenu extends Activity {
 						new String[] {MY_ID},
 						whereIDSame, null, null, null, null);
 				Log.e("count", articleCursor.getCount() + " " + bm.id);
-				if(articleCursor.getCount() > 0) {
+				if (articleCursor.getCount() > 0) {
 					database.update(ARTICLE_TABLE, values, whereIDSame, null);
 					Log.e("updated", bm.article.title);
-				}
-				else if(!bm.archive) {
+				} else if (!bm.archive) {
 					try {
-						String html = parseHTML("http://readability.com/mobile/articles/"+bm.article.id);
-						Log.e("url: ", "http://readability.com/mobile/articles/"+bm.article.id);
+						String html = parseHTML("http://readability.com/mobile/articles/" + bm.article.id);
+						Log.e("url: ", "http://readability.com/mobile/articles/" + bm.article.id);
 						values.put(ARTICLE_CONTENT, html);
 						database.insert(ARTICLE_TABLE, null, values);
 						Log.e("inserted", bm.article.title );
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-				}
-				else {
+				} else {
 					values.put(ARTICLE_CONTENT, "");
 					database.insert(ARTICLE_TABLE, null, values);
 					Log.e("inserted", bm.article.title );
@@ -643,7 +639,7 @@ public class MainMenu extends Activity {
 		}
 
 		protected void onProgressUpdate(Integer... values) {
-			if(tempDialog.isShowing()) {
+			if (tempDialog.isShowing()) {
 				tempDialog.dismiss();
 				progressDialog.setMax(values[1]);
 				progressDialog.show();
@@ -652,16 +648,16 @@ public class MainMenu extends Activity {
 		}
 
 		protected void onPostExecute(Boolean unused) {
-			if(tempDialog.isShowing()) {
+			if (tempDialog.isShowing()) {
 				tempDialog.dismiss();
 			}
-			if(progressDialog.isShowing()) {
+			if (progressDialog.isShowing()) {
 				progressDialog.dismiss();
 			}
-			if(unused == false) {
+			if (unused == false) {
 				displayAlert(MainMenu.this, "Error", "Could not connect to readability.com, please check your internet connection status and try again.");
 			}
-			if(skip) {
+			if (skip) {
 				startActivity(new Intent(MainMenu.this, ReadingList.class));
 			}
 		}

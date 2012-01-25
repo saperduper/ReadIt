@@ -80,13 +80,14 @@ public class ReadingList extends TabActivity {
 		tabHost.setCurrentTab(1);
 		tabHost.setCurrentTab(0);
 	}
-	
 		
 	private void addTab(final View view, final String tag, TabHost th) {
 		View tabview = createTabLabel(th.getContext(), tag);
-	        TabSpec setContent = th.newTabSpec(tag).setIndicator(tabview).setContent(new TabContentFactory() {
-			public View createTabContent(String tag) {return view;}
-		});
+        TabSpec setContent = th.newTabSpec(tag).setIndicator(tabview).setContent(new TabContentFactory() {
+        	public View createTabContent(String tag) {
+        		return view;
+        	}
+        });
 		th.addTab(setContent);
 	}
 
@@ -175,9 +176,9 @@ public class ReadingList extends TabActivity {
 				getStrColumns,
 				filter, null, null, null, DATE_ADDED + " DESC");
 		ac.moveToFirst();
-		if(!ac.isAfterLast()) {
+		if (!ac.isAfterLast()) {
 			do {
-				Article tempArticle = new Article(ac.getString(0),ac.getString(1),ac.getString(2),ac.getString(3),ac.getString(4), ac.getString(5), ac.getString(6), ac.getString(7), ac.getString(8));
+				Article tempArticle = new Article(ac.getString(0), ac.getString(1), ac.getString(2), ac.getString(3), ac.getString(4), ac.getString(5), ac.getString(6), ac.getString(7), ac.getString(8));
 				articleInfo.add(tempArticle);
 			} while (ac.moveToNext());
 		}

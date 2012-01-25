@@ -52,10 +52,9 @@ public class ReadingListAdapter extends BaseAdapter {
 
 		TextView tvContent = (TextView) convertView.findViewById(R.id.listitem_content);
 		String content = entry.content;
-		if(entry.archive.equals("1")) {
+		if (entry.archive.equals("1")) {
 			tvContent.setText("");
-		}
-		else if(content != null) {
+		} else if (content != null) {
 			int indexOfStart = content.indexOf("<div class=\"post_body\">");
 			String removeTop = content.substring(indexOfStart == -1 ? 0 : indexOfStart);
 			Matcher m = Pattern.compile("<.+?>").matcher(removeTop);
