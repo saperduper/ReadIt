@@ -61,7 +61,7 @@ public class ReadingListAdapter extends BaseAdapter {
 			Matcher m = Pattern.compile("<.+?>").matcher(removeTop);
 			String strippedContent = m.replaceAll("");
 			strippedContent = strippedContent.replaceAll(entry.domain, "");
-			tvContent.setText(strippedContent.trim().substring(0, Math.min(90, strippedContent.length())).trim() + ((strippedContent == "") ? "" : "..." ));
+			tvContent.setText(strippedContent.trim().substring(0, Math.min(90, strippedContent.length())).trim() + (("".equals(strippedContent)) ? "" : "..." ));
 		}
 		return convertView;
 	}

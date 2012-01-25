@@ -200,7 +200,7 @@ public class MainMenu extends Activity {
 				imm.hideSoftInputFromWindow(urlRead.getWindowToken(), 0);
 				GetArticleTask fetchContent = new GetArticleTask();
 				String url = urlRead.getText().toString();
-				if(url != "") {
+				if(!"".equals(url)) {
 					fetchContent.execute(url);
 				}
 
@@ -213,7 +213,7 @@ public class MainMenu extends Activity {
 				if (actionId == EditorInfo.IME_ACTION_GO) {
 					GetArticleTask fetchContent = new GetArticleTask();
 					String url = urlRead.getText().toString();
-					if(url != "") {
+					if(!"".equals(url)) {
 						fetchContent.execute(url);
 					}
 				}
@@ -255,7 +255,7 @@ public class MainMenu extends Activity {
 					String url = urlRead.getText().toString();
 					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.hideSoftInputFromWindow(urlRead.getWindowToken(), 0);
-					if(url == "" || url.length() < 3) {
+					if("".equals(url) || url.length() < 3) {
 						msg.what = MSG_END;
 						msg.arg1 = MSG_BAD_URL;
 						myHandler.sendMessage(msg);
@@ -290,7 +290,7 @@ public class MainMenu extends Activity {
 	}
 
 	public void launchWebBrowser(String visitUrl) {
-		if(visitUrl != "") {
+		if(!"".equals(visitUrl)) {
 			Intent i = new Intent(getBaseContext(), WebActivity.class);
 			i.putExtra("article_url", visitUrl);
 			i.putExtra("saved", false);
@@ -299,7 +299,7 @@ public class MainMenu extends Activity {
 	}
 
 	public void launchWebBrowser(String visitUrl, String fullUrl) {
-		if(visitUrl != "") {
+		if(!"".equals(visitUrl)) {
 			Intent i = new Intent(getBaseContext(), WebActivity.class);
 			i.putExtra("article_url", visitUrl);
 			i.putExtra("full_url", fullUrl);
