@@ -10,24 +10,24 @@ public class ArticlesSQLiteOpenHelper extends SQLiteOpenHelper {
 
 	public static final int VERSION = 5;
 	public static final String DB_NAME = "article_db.sqlite";
-	public static String MY_ID = "my_id";
-	public static String ARTICLE_TABLE = "article";
-	public static String ARTICLE_ID = "article_id";
-	public static String ARTICLE_AUTHOR = "author";
-	public static String ARTICLE_CONTENT = "content";
-	public static String ARTICLE_CONTENT_SIZE = "content_size";
-	public static String ARTICLE_DOMAIN = "domain";
-	public static String ARTICLE_SHORT_URL = "short_url";
-	public static String ARTICLE_TITLE = "title";
-	public static String ARTICLE_URL = "url";
-	public static String READ_PERCENT = "read_percent";
-	public static String DATE_UPDATED = "date_updated";
-	public static String FAVORITE = "favorite";
-	public static String BOOKMARK_ID = "bookmark_id";
-	public static String DATE_ADDED = "date_added";
-	public static String ARTICLE_HREF = "article_href";
-	public static String DATE_FAVORITED = "date_favorited";
-	public static String ARCHIVE = "archive";
+	public static final String MY_ID = "my_id";
+	public static final String ARTICLE_TABLE = "article";
+	public static final String ARTICLE_ID = "article_id";
+	public static final String ARTICLE_AUTHOR = "author";
+	public static final String ARTICLE_CONTENT = "content";
+	public static final String ARTICLE_CONTENT_SIZE = "content_size";
+	public static final String ARTICLE_DOMAIN = "domain";
+	public static final String ARTICLE_SHORT_URL = "short_url";
+	public static final String ARTICLE_TITLE = "title";
+	public static final String ARTICLE_URL = "url";
+	public static final String READ_PERCENT = "read_percent";
+	public static final String DATE_UPDATED = "date_updated";
+	public static final String FAVORITE = "favorite";
+	public static final String BOOKMARK_ID = "bookmark_id";
+	public static final String DATE_ADDED = "date_added";
+	public static final String ARTICLE_HREF = "article_href";
+	public static final String DATE_FAVORITED = "date_favorited";
+	public static final String ARCHIVE = "archive";
 	Context c;
 	
 	public ArticlesSQLiteOpenHelper(Context context) {
@@ -46,7 +46,7 @@ public class ArticlesSQLiteOpenHelper extends SQLiteOpenHelper {
 		db.delete(ARTICLE_TABLE, null, null);
 		SharedPreferences preferences = c.getSharedPreferences(PREF_NAME, 0);
 		SharedPreferences.Editor editor = preferences.edit();
-		editor.putString("previous_update", zeroUpdate);
+		editor.putString("previous_update", ZERO_UPDATE);
 		editor.commit();
 	}
 

@@ -56,10 +56,10 @@ public class HelperMethods {
 	public final static int MSG_WV_ADDARC = 9;
 	public final static int MSG_WV_READ_PERCENT = 10;
 	
-	public final static String agent = "Mozilla/5.0 (Linux; U; Android 2.1-update1; de-de; HTC Desire 1.19.161.5 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17";
+	public final static String AGENT = "Mozilla/5.0 (Linux; U; Android 2.1-update1; de-de; HTC Desire 1.19.161.5 Build/ERE27) AppleWebKit/530.17 (KHTML, like Gecko) Version/4.0 Mobile Safari/530.17";
 
 
-	public final static String zeroUpdate = "2011-01-01 00:00:00";
+	public final static String ZERO_UPDATE = "2011-01-01 00:00:00";
 	
 	public static SQLiteDatabase setupDB(Context c) {
 		ArticlesSQLiteOpenHelper helper = new ArticlesSQLiteOpenHelper(c);
@@ -191,7 +191,7 @@ public class HelperMethods {
 	public static String parseHTML(String Url) throws Exception {
 		HttpClient client = new DefaultHttpClient();
 		HttpGet request = new HttpGet(Url);
-		request.setHeader("User-Agent", agent);
+		request.setHeader("User-Agent", AGENT);
 		
 		HttpResponse response = client.execute(request);
 		

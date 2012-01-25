@@ -102,7 +102,7 @@ public class MainMenu extends Activity {
 	    	database.delete(ARTICLE_TABLE, null, null);
 			SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
 			SharedPreferences.Editor editor = preferences.edit();
-			editor.putString("previous_update", zeroUpdate);
+			editor.putString("previous_update", ZERO_UPDATE);
 			editor.commit();
 	        return true;
 	    }
@@ -227,7 +227,7 @@ public class MainMenu extends Activity {
 				database.delete(ARTICLE_TABLE, null, null);
 				SharedPreferences preferences = getBaseContext().getSharedPreferences(PREF_NAME, 0);
 				SharedPreferences.Editor editor = preferences.edit();
-				editor.putString("previous_update", zeroUpdate);
+				editor.putString("previous_update", ZERO_UPDATE);
 				editor.commit();
 			}
 		});
@@ -545,7 +545,7 @@ public class MainMenu extends Activity {
 			oauthToken = preferences.getString("oauth_token", null); 
 			oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 			oauthVerifier = preferences.getString("oauth_verifier", null);
-			previousUpdate = preferences.getString("previous_update", zeroUpdate);
+			previousUpdate = preferences.getString("previous_update", ZERO_UPDATE);
 
 			tempDialog = new ProgressDialog(MainMenu.this);
 			tempDialog.setMessage("Connecting to server...");
@@ -583,7 +583,7 @@ public class MainMenu extends Activity {
 			SearchBookmarks response = bookmarkGson.fromJson(bookmarkReader, SearchBookmarks.class);
 
 			List<Bookmark> bookmarks = response.bookmarks;
-			String latestUpdate = zeroUpdate;
+			String latestUpdate = ZERO_UPDATE;
 			//Log.e("looking at bookmark", "hello");
 			int count = 0;
 			publishProgress(0, bookmarks.size());

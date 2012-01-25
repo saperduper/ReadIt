@@ -60,7 +60,7 @@ public class WebActivity extends Activity {
 	String fullUrl = "";
 	String url = "";
 	String title = "";
-	float read_percent = 0;
+	float readPercent = 0;
 	private SQLiteDatabase database;
 
 	@Override
@@ -113,12 +113,12 @@ public class WebActivity extends Activity {
 			title = data.getString("article_title");
 			Log.e("read_percent", "read_percent string = " + data.getString("read_percent"));
 			try {
-				read_percent = Float.valueOf(data.getString("read_percent")).floatValue();
+				readPercent = Float.valueOf(data.getString("read_percent")).floatValue();
 			}
 			catch (Exception e) {
 				// read_percent can stay 0.0 for all I care
 			}
-			Log.e("read_percent", "read_percent float = " + read_percent);
+			Log.e("read_percent", "read_percent float = " + readPercent);
 		}
 		Log.e("url", url + "hi");
 		if(url != null && (content == null || content.length() < 3)) {
@@ -151,7 +151,7 @@ public class WebActivity extends Activity {
 			progress = (webView.getScrollY()) / (webView.getContentHeight() * webView.getScale());
 		}
 		Log.v("back", "progress = " + progress);
-		read_percent = progress;
+		readPercent = progress;
 		updateReadPercent();
 		super.onBackPressed();
 	}
@@ -325,7 +325,7 @@ public class WebActivity extends Activity {
 							oauthToken, oauthTokenSecret, oauthVerifier);
 					String bookmarksUrl = requestApiUrl("bookmarks/" + bookmarkID +"/", API_SECRET + oauthTokenSecret, extraParams);
 					List<NameValuePair> nameValuePairs = new ArrayList<NameValuePair>();
-					nameValuePairs.add(new BasicNameValuePair("read_percent", String.format("%.2g%n", read_percent)));
+					nameValuePairs.add(new BasicNameValuePair("read_percent", String.format("%.2g%n", readPercent)));
 					String message = HelperMethods.postData(bookmarksUrl, nameValuePairs);
 					msg.obj = message;
 					msg.what = MSG_END;
@@ -521,7 +521,7 @@ public class WebActivity extends Activity {
 					"})()");  
 			view.loadUrl("javascript:(function() {" +
 					"$(document).ready(function() {" +
-					"$('body').scrollTop($('body').outerHeight() * " + read_percent + " )" +
+					"$('body').scrollTop($('body').outerHeight() * " + readPercent + " )" +
 					"});" +
 					"})()");
 
@@ -599,7 +599,7 @@ public class WebActivity extends Activity {
 			oauthToken = preferences.getString("oauth_token", null); 
 			oauthTokenSecret = preferences.getString("oauth_token_secret", null);
 			oauthVerifier = preferences.getString("oauth_verifier", null);
-			previousUpdate = preferences.getString("previous_update", zeroUpdate);
+			previousUpdate = preferences.getString("previous_update", ZERO_UPDATE);
 		}
 
 		protected Boolean doInBackground(Void... params) {
@@ -627,7 +627,7 @@ public class WebActivity extends Activity {
 			SearchBookmarks response = bookmarkGson.fromJson(bookmarkReader, SearchBookmarks.class);
 
 			List<Bookmark> bookmarks = response.bookmarks;
-			String latestUpdate = zeroUpdate;
+			String latestUpdate = ZERO_UPDATE;
 			//Log.e("looking at bookmark", "hello");
 			publishProgress(0, bookmarks.size());
 			for(Bookmark bm : bookmarks) {
